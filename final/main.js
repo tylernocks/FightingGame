@@ -1,8 +1,8 @@
 var gamejs = require('gamejs');
 var font = require('gamejs/font');
 var mask = require('gamejs/mask');
-var screenWidth = 1200;
-var screenHeight = 600;
+var screenWidth = 960;
+var screenHeight = 540;
 var spriteSize = 128;
 var numSprites = 4;
 var up = 1, down = 2, left = 4, right = 8, canChange = 16;
@@ -71,7 +71,7 @@ Player.prototype.update = function(msDuration) {
       this.placement = this.placement - 14;
     }
   }else if(this.mask & right){
-    if(this.placement < 1000){
+    if(this.placement < 840){
       this.placement = this.placement + 14;
     }
   }
@@ -178,7 +178,7 @@ function main() {
       };
       player1.update(msDuration);
       player2.update(msDuration);
-      display.blit(defaultFont.render("ROCK PAPER SCISSORS", "#000000"), [300, 0]);
+      display.blit(defaultFont.render("Dragon no Z saru", "#000000"), [960/2 - 150, 0]);
       display.blit(defaultFont.render("Player 1: ", "#000000"), [0, 240]);
       display.blit(defaultFont.render(player1.health, "#000000"), [170, 240]);
       display.blit(defaultFont.render("Controls: W A S D", "#000000"), [0, 280]);
@@ -198,8 +198,8 @@ function main() {
       };
     };
   };
-  var player1 = new Player(0, 3);
-  var player2 = new Player(1000, 3);
+  var player1 = new Player(100, 3);
+  var player2 = new Player(800, 3);
   gamejs.time.fpsCallback(gameTick, this, 60);
 };
 gamejs.preload(['sprites_big.png']);
