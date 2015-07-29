@@ -11,6 +11,7 @@ var timeBetweenHits = 300;
 var timeSinceHit = 0;
 var activeGame = true;
 var defaultFont = new font.Font("40px Arial");
+var time = 30;
 
 function Player(placement, formIndex){
   this.placement = placement;
@@ -162,6 +163,15 @@ function main() {
     }    
   };
 
+  function subtractTime()
+  {
+    time-= 1;
+    if(time <= 0)
+    {
+      time = 0;
+    }
+  }
+
   function gameTick(msDuration) {
     if(activeGame){
       gamejs.event.get().forEach(function(event) {
@@ -176,31 +186,57 @@ function main() {
       }else{
         timeSinceHit +=msDuration;
       };
-      player1.update(msDuration);
-      player2.update(msDuration);
-      display.blit(defaultFont.render("Dragon no Z saru", "#000000"), [960/2 - 150, 0]);
-      display.blit(defaultFont.render("Player 1: ", "#000000"), [0, 240]);
-      display.blit(defaultFont.render(player1.health, "#000000"), [170, 240]);
-      display.blit(defaultFont.render("Controls: W A S D", "#000000"), [0, 280]);
-      display.blit(defaultFont.render("Player 2: ", "#000000"), [600, 240]);
-      display.blit(defaultFont.render(player2.health, "#000000"), [770, 240]);
-      display.blit(defaultFont.render("Controls: \u2191 \u2193 \u2190 \u2192", "#000000"), [600, 280]);
-      player1.draw(display);
-      player2.draw(display);
+
+      if(time != 0)
+      {
+        player1.update(msDuration);
+        player2.update(msDuration);
+        display.blit(defaultFont.render("Player 1: ", "#000000"), [0, 240]);
+        display.blit(defaultFont.render(player1.health, "#000000"), [170, 240]);
+        display.blit(defaultFont.render("Controls: W A S D", "#000000"), [0, 280]);
+        display.blit(defaultFont.render("Player 2: ", "#000000"), [600, 240]);
+        display.blit(defaultFont.render(player2.health, "#000000"), [770, 240]);
+        display.blit(defaultFont.render("Controls: \u2191 \u2193 \u2190 \u2192", "#000000"), [600, 280]);
+        display.blit(defaultFont.render(time, "#000000"), [960/2 - 25, 0]);
+
+        player1.draw(display);
+        player2.draw(display);
+      }
+      if(time === 0)
+        {
+           display.blit(defaultFont.render("You ran out of time lmfao", "#000000"), [960/2 , 540/2]);
+        }
       if(player1.health === 0 || player2.health === 0){
         activeGame = false;
         if (player1.health === 0){
           display.blit(defaultFont.render("Player 1 Defeated", "#000000"), [0, 320]);
+          //snoop
+          var x = document.createElement("IMG");
+          x.setAttribute("src", "http://25.media.tumblr.com/tumblr_mc351hVQPQ1qf021po1_500.gif");
+          x.setAttribute("width", "960");
+          x.setAttribute("height", "540");
+          x.setAttribute("alt", "SMOKE WEED ERR'DAY ");
+          document.body.appendChild(x);
         }
         if (player2.health === 0){
           display.blit(defaultFont.render("Player 2 Defeated", "#000000"), [600, 320]);
         }
+        var y = document.createElement("IMG");
+        y.setAttribute("src", "http://25.media.tumblr.com/tumblr_mc351hVQPQ1qf021po1_500.gif");
+        y.setAttribute("width", "960");
+        y.setAttribute("height", "540");
+        y.setAttribute("alt", "SMOKE WEED ERR'DAY ");
+        document.body.appendChild(y);
+
+
       };
     };
   };
   var player1 = new Player(100, 3);
   var player2 = new Player(800, 3);
   gamejs.time.fpsCallback(gameTick, this, 60);
+  setInterval (subtractTime, 1000);
+
 };
 gamejs.preload(['sprites_big.png']);
 gamejs.ready(main);
